@@ -36,29 +36,45 @@ class VideoHygiseat extends Module
         }
     }
     public function hookDisplayVideoLink(){
-        $lang_isocode = $this->context->language->iso_code;
-        $video_url = $this->getVideoUrl($lang_isocode);
+        $langIso = $this->context->language->iso_code;
+        $videoUrl = $this->getVideoUrl($langIso);
+        $planPath = $this->getPlanPath($langIso);
         $this->context->smarty->assign(
                 [
-                    'video_url' => $video_url
+                    'videoUrl' => $videoUrl,
+                    'planPath' => $planPath
                     ]
             );
         return $this->display(__FILE__, 'hook_videoplayer.tpl');
     }
-    public function getVideoUrl($lang_iso){
-        $video_url = "";
-        switch ($lang_iso) {
+    public function getVideoUrl($langIso){
+        $videoUrl = "";
+        switch ($langIso) {
             case "fr":
-                $video_url = "https://www.youtube.com/embed/82qHLOWQaJc?si=GuPD77RFQEXZohBd&rel=0&noad=1";
+                $videoUrl = "https://www.youtube.com/embed/82qHLOWQaJc?si=GuPD77RFQEXZohBd&rel=0&noad=1";
                 break;
             case "en":
-                $video_url = "https://www.youtube.com/embed/FpsmVe1jlb4?si=DAk7BZZxtkdTgLiQ&rel=0&noad=1";
+                $videoUrl = "https://www.youtube.com/embed/FpsmVe1jlb4?si=DAk7BZZxtkdTgLiQ&rel=0&noad=1";
                 break;
             default:
-                $video_url = "https://www.youtube.com/embed/FpsmVe1jlb4?si=DAk7BZZxtkdTgLiQ&rel=0&noad=1";
+                $videoUrl = "https://www.youtube.com/embed/FpsmVe1jlb4?si=DAk7BZZxtkdTgLiQ&rel=0&noad=1";
                 break;
             } 
-        return $video_url;
+        return $videoUrl;
+    }
+    public function getPlanPath($langIso){
+        switch ($langIso) {
+            case "fr":
+                $planPath = $this->_path."\img\SANIAIR_web_FR.PNG";
+                break;
+            case "en":
+                $planPath = $this->_path."\img\SANIAIR_web_EN.PNG";
+                break;
+            default:
+                $planPath = $this->_path."\img\SANIAIR_web_EN.PNG";
+                break;
+            }
+        return $planPath;
     }
     public function getContent(){
 
