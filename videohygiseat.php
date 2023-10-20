@@ -15,68 +15,71 @@ class VideoHygiseat extends Module
         $this->confirmUninstall = $this->l('Êtes vous sur de vouloir désinstaller ?');
 
         parent::__construct();
-
     }
+
     public function install()
     {
         return parent::install()  &&
             $this->registerHook('displayVideoLink')
             && $this->registerHook('header');
     }
-    public function uninstall() {
+
+    public function uninstall()
+    {
         $this->unregisterHook('displayVideoLink');
         $this->unregisterHook('header');
+
         return parent::uninstall();
     }
+
     public function hookDisplayHeader()
     {
-        $this->context->controller->addCSS($this->_path.'views/css/need-update.css', 'all');
+        $this->context->controller->addCSS($this->_path . 'views/css/need-update.css', 'all');
+
         if ($this->context->controller->php_self == 'category' && (int)Tools::getValue('id_category') == 3) {
-            $this->context->controller->addCSS($this->_path.'views/css/hookvideoplayer.css', 'all');
+            $this->context->controller->addCSS($this->_path . 'views/css/hookvideoplayer.css', 'all');
         }
     }
-    public function hookDisplayVideoLink(){
+
+    public function hookDisplayVideoLink()
+    {
         $langIso = $this->context->language->iso_code;
         $videoUrl = $this->getVideoUrl($langIso);
         $planPath = $this->getPlanPath($langIso);
-        $this->context->smarty->assign(
-                [
-                    'videoUrl' => $videoUrl,
-                    'planPath' => $planPath
-                    ]
-            );
+
+        $this->context->smarty->assign([
+            'videoUrl' => $videoUrl,
+            'planPath' => $planPath
+        ]);
+
         return $this->display(__FILE__, 'hook_videoplayer.tpl');
     }
-    public function getVideoUrl($langIso){
-        $videoUrl = "";
-        switch ($langIso) {
-            case "fr":
-                $videoUrl = "https://www.youtube.com/embed/82qHLOWQaJc?si=GuPD77RFQEXZohBd&rel=0&noad=1";
-                break;
-            case "en":
-                $videoUrl = "https://www.youtube.com/embed/FpsmVe1jlb4?si=DAk7BZZxtkdTgLiQ&rel=0&noad=1";
-                break;
-            default:
-                $videoUrl = "https://www.youtube.com/embed/FpsmVe1jlb4?si=DAk7BZZxtkdTgLiQ&rel=0&noad=1";
-                break;
-            } 
-        return $videoUrl;
-    }
-    public function getPlanPath($langIso){
-        switch ($langIso) {
-            case "fr":
-                $planPath = $this->_path."\img\SANIAIR_web_FR.PNG";
-                break;
-            case "en":
-                $planPath = $this->_path."\img\SANIAIR_web_EN.PNG";
-                break;
-            default:
-                $planPath = $this->_path."\img\SANIAIR_web_EN.PNG";
-                break;
-            }
-        return $planPath;
-    }
-    public function getContent(){
 
+    private function getVideoUrl($langIso)
+    {
+        $defaultVideoUrl = "FpsmVe1jlb4?si=DAk7BZZxtkdTgLiQ&rel=0&noad=1";
+        $videoLanguageMapping = [
+            'fr' => "82qHLOWQaJc?si=GuPD77RFQEXZohBd&rel=0&noad=1",
+            'en' => "FpsmVe1jlb4?si=DAk7BZZxtkdTgLiQ&rel=0&noad=1"
+        ];
+        $videoUrl = $videoLanguageMapping[$langIso] ?? $defaultVideoUrl;
+
+        return "https://www.youtube.com/embed/$videoUrl";
+    }
+
+    private function getPlanPath($langIso)
+    {
+        $defaultPathImg = "SANIAIR_web_EN.PNG";
+        $planLanguageMapping = [
+            'fr' => "SANIAIR_web_FR.PNG",
+            'en' => "SANIAIR_web_EN.PNG"
+        ];
+        $planPath = $planLanguageMapping[$langIso] ?? $defaultPathImg;
+
+        return $this->_path . "img/{$planPath}";
+    }
+
+    public function getContent()
+    {
     }
 }

@@ -7,7 +7,9 @@
         </div>
         <div class="col-lg-6 col-md-6 col-xs-12 text-centervp">
             <div class="row mb-1 mt-1" id="right-image-centeredvp">
+                <a href={$planPath} class="image-link">
                     <img src={$planPath} class="img-responsive right-imagevp" alt={l s='Aspiration des mauvaises odeurs WC' mod='videohygiseat'}>
+                </a>
             </div>
             <h4>{l s='Option aspiration des odeurs sur version suspendue' mod='videohygiseat'}</h4>
             <p class="text-centervp">{l s='Système efficace d\'aspiration des odeurs directement à la source dans la cuvette pour les évacuer dans la canalisation des eaux usées après le siphon (sans filtre à changer).' mod='videohygiseat'}</p>
